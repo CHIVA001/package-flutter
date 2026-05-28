@@ -1,0 +1,1 @@
+enum AppToastType { info, success, error, warning }
