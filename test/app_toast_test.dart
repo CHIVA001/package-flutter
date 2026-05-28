@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:app_toast/app_toast.dart';
+import 'package:glass_app_toast/app_toast.dart';
 
 void main() {
   group('AppToastStyle', () {
