@@ -9,9 +9,16 @@ import 'app_toast_position.dart';
 import 'app_toast_style.dart';
 import 'app_toast_type.dart';
 
+/// A lightweight toast notification service that displays a single overlay toast.
+///
+/// Calling [show] replaces any existing toast with the new toast message.
 class AppToast {
   static OverlayEntry? _current;
 
+  /// Displays a toast overlay using the provided [context].
+  ///
+  /// The [title] is required. Optionally provide [description], [type], [position],
+  /// custom [style], and a custom [icon] or [iconWidget].
   static void show(
     BuildContext context, {
     required String title,
@@ -32,23 +39,23 @@ class AppToast {
 
     final (defaultIcon, color) = switch (type) {
       AppToastType.info => (
-          isIOS ? CupertinoIcons.info : Icons.info_outline,
-          Colors.blue,
-        ),
+        isIOS ? CupertinoIcons.info : Icons.info_outline,
+        Colors.blue,
+      ),
       AppToastType.success => (
-          isIOS ? CupertinoIcons.checkmark_circle : Icons.check_circle_outline,
-          Colors.green,
-        ),
+        isIOS ? CupertinoIcons.checkmark_circle : Icons.check_circle_outline,
+        Colors.green,
+      ),
       AppToastType.error => (
-          isIOS ? CupertinoIcons.xmark_circle : Icons.cancel_outlined,
-          Colors.red,
-        ),
+        isIOS ? CupertinoIcons.xmark_circle : Icons.cancel_outlined,
+        Colors.red,
+      ),
       AppToastType.warning => (
-          isIOS
-              ? CupertinoIcons.exclamationmark_triangle
-              : Icons.warning_amber_outlined,
-          Colors.orange,
-        ),
+        isIOS
+            ? CupertinoIcons.exclamationmark_triangle
+            : Icons.warning_amber_outlined,
+        Colors.orange,
+      ),
     };
 
     late OverlayEntry entry;
@@ -110,9 +117,9 @@ class _AppToastWidgetState extends State<_AppToastWidget>
   late final Animation<double> _opacity;
   late final Animation<Offset> _slide;
 
-  double _dragX  = 0;
+  double _dragX = 0;
   bool _dragging = false;
-  bool _done     = false;
+  bool _done = false;
   Timer? _timer;
 
   @override
@@ -134,9 +141,10 @@ class _AppToastWidgetState extends State<_AppToastWidget>
         ? const Offset(0, 0.3)
         : const Offset(0, -0.3);
 
-    _slide = Tween<Offset>(begin: begin, end: Offset.zero).animate(
-      CurvedAnimation(parent: _entryController, curve: Curves.easeOut),
-    );
+    _slide = Tween<Offset>(
+      begin: begin,
+      end: Offset.zero,
+    ).animate(CurvedAnimation(parent: _entryController, curve: Curves.easeOut));
 
     _entryController.forward();
     _startTimer();
@@ -174,7 +182,7 @@ class _AppToastWidgetState extends State<_AppToastWidget>
     if (!_dragging || _done) return;
     _dragging = false;
 
-    final sw       = MediaQuery.of(context).size.width;
+    final sw = MediaQuery.of(context).size.width;
     final velocity = d.velocity.pixelsPerSecond.dx;
 
     if (_dragX.abs() > sw * 0.3 || velocity.abs() > 600) {
@@ -190,7 +198,7 @@ class _AppToastWidgetState extends State<_AppToastWidget>
     _done = true;
     _cancelTimer();
 
-    final sw     = MediaQuery.of(context).size.width;
+    final sw = MediaQuery.of(context).size.width;
     final target = _dragX > 0 ? sw + 100 : -(sw + 100);
 
     final flyController = AnimationController(
@@ -198,9 +206,10 @@ class _AppToastWidgetState extends State<_AppToastWidget>
       duration: const Duration(milliseconds: 220),
     );
 
-    final flyAnim = Tween<double>(begin: _dragX, end: target).animate(
-      CurvedAnimation(parent: flyController, curve: Curves.easeIn),
-    );
+    final flyAnim = Tween<double>(
+      begin: _dragX,
+      end: target,
+    ).animate(CurvedAnimation(parent: flyController, curve: Curves.easeIn));
 
     flyAnim.addListener(() {
       if (mounted) setState(() => _dragX = flyAnim.value);
@@ -225,9 +234,7 @@ class _AppToastWidgetState extends State<_AppToastWidget>
     if (widget.style?.backgroundColor != null) {
       return widget.style!.backgroundColor!;
     }
-    return widget.glass
-        ? Colors.white.withValues(alpha: 0.15)
-        : Colors.white;
+    return widget.glass ? Colors.white.withValues(alpha: 0.15) : Colors.white;
   }
 
   Color get _borderColor {
@@ -257,7 +264,7 @@ class _AppToastWidgetState extends State<_AppToastWidget>
       widget.style?.iconBackgroundColor ??
       widget.color.withValues(alpha: widget.glass ? 0.2 : 0.1);
 
-  double get _iconSize  => widget.style?.iconSize ?? 20;
+  double get _iconSize => widget.style?.iconSize ?? 20;
   EdgeInsets get _padding =>
       widget.style?.padding ??
       const EdgeInsets.symmetric(horizontal: 16, vertical: 12);
@@ -266,7 +273,8 @@ class _AppToastWidgetState extends State<_AppToastWidget>
     return Container(
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(color: _iconBgColor, shape: BoxShape.circle),
-      child: widget.iconWidget ??
+      child:
+          widget.iconWidget ??
           Icon(widget.icon, color: widget.color, size: _iconSize),
     );
   }
@@ -339,7 +347,8 @@ class _AppToastWidgetState extends State<_AppToastWidget>
           color: _borderColor,
           width: widget.style?.borderWidth ?? 1,
         ),
-        boxShadow: widget.style?.boxShadow ??
+        boxShadow:
+            widget.style?.boxShadow ??
             [
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.08),
@@ -354,12 +363,12 @@ class _AppToastWidgetState extends State<_AppToastWidget>
 
   @override
   Widget build(BuildContext context) {
-    final mq       = MediaQuery.of(context);
+    final mq = MediaQuery.of(context);
     final isBottom = widget.position == AppToastPosition.bottom;
     final dragFade = (1.0 - (_dragX.abs() / 150).clamp(0.0, 1.0));
 
     return Positioned(
-      top:    isBottom ? null : mq.padding.top + 8,
+      top: isBottom ? null : mq.padding.top + 8,
       bottom: isBottom ? mq.padding.bottom + 24 : null,
       left: 16,
       right: 16,
@@ -369,9 +378,9 @@ class _AppToastWidgetState extends State<_AppToastWidget>
           position: _slide,
           child: GestureDetector(
             onTap: _dismiss,
-            onHorizontalDragStart:  _onDragStart,
+            onHorizontalDragStart: _onDragStart,
             onHorizontalDragUpdate: _onDragUpdate,
-            onHorizontalDragEnd:    _onDragEnd,
+            onHorizontalDragEnd: _onDragEnd,
             child: Transform.translate(
               offset: Offset(_dragX, 0),
               child: Opacity(

@@ -1,0 +1,16 @@
+name: app_toast_example
+description: Example Flutter app demonstrating the app_toast package.
+publish_to: none
+
+environment:
+  sdk: ^3.12.0
+  flutter: ">=1.10.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  app_toast:
+    path: ..
+
+flutter:
+  uses-material-design: true

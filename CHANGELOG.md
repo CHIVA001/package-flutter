@@ -1,3 +1,3 @@
-## 0.0.1
+## 1.0.1
 
-* TODO: Describe initial release.
+* Patch release: version bump to `1.0.1` with package metadata and documentation refinements.

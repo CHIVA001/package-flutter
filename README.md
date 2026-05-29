@@ -14,7 +14,7 @@ A fully customizable Flutter toast notification package.
 ## Installation
 ```yaml
 dependencies:
-  app_toast: ^0.0.1
+  app_toast: ^1.0.0
 ```
 
 ## Usage
@@ -25,11 +25,19 @@ AppToast.show(
   type: AppToastType.success,
 );
 
-// Glass
 AppToast.show(
   context,
   title: 'Hello',
+  description: 'This is a glass toast message.',
   glass: true,
   style: AppToastStyle(blurSigma: 20),
 );
 ```
+
+## Example
+
+See `example/lib/main.dart` for a complete Flutter example showing how to use `AppToast` in a simple app.
+
+## License
+
+MIT License
