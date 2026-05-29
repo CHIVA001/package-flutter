@@ -1,4 +1,4 @@
-name: app_toast
+name: glass_app_toast
 description: "A fully customizable Flutter toast notification with glass effect, swipe to dismiss, and platform-aware icons."
 version: 1.0.1
 homepage: https://github.com/CHIVA001/package-flutter
